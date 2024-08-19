@@ -21,8 +21,11 @@ export function Posts() {
   }, [currentPage, queryClient]);
 
   const deletePostMutate = useMutation({
-    mutationFn: (postId) => deletePost(postId)
-  })
+    mutationFn: (postId) => deletePost(postId),
+  });
+  const updatePostTitleMutate = useMutation({
+    mutationFn: (postId) => updatePost(postId),
+  });
 
   // Get this page's posts
   const { data, error, isLoading, isError } = useQuery({
@@ -51,6 +54,7 @@ export function Posts() {
             className="post-title"
             onClick={() => {
               deletePostMutate.reset();
+              updatePostTitleMutate.reset();
               setSelectedPost(post);
             }}
           >
@@ -78,7 +82,13 @@ export function Posts() {
         </button>
       </div>
       <hr />
-      {selectedPost && <PostDetail post={selectedPost} deletePostMutate={deletePostMutate} />}
+      {selectedPost && (
+        <PostDetail
+          post={selectedPost}
+          deletePostMutate={deletePostMutate}
+          updatePostTitleMutate={updatePostTitleMutate}
+        />
+      )}
     </>
   );
 }
